@@ -63,5 +63,8 @@ public class MemoryButton {
 	public int getbildID() {
 		return bildID;
 	}
+	public void setbildID(int id) {
+		bildID = id;
+	}
 
 }

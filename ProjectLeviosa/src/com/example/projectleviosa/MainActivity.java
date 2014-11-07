@@ -20,16 +20,18 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button restart, end;
 	private int isClicked;
 	private List<MemoryButton> buttons;
-	private int[] bildIDs = { R.drawable.tadeus, R.drawable.tadeus,
-			R.drawable.tadeus, R.drawable.tadeus, R.drawable.tadeus,
-			R.drawable.tadeus, R.drawable.levizoa, R.drawable.levizoa,
-			R.drawable.levizoa, R.drawable.levizoa, R.drawable.levizoa,
-			R.drawable.levizoa };
+	private int[] bildIDs = { R.drawable.auto, R.drawable.bahn,
+			R.drawable.ball, R.drawable.blume, R.drawable.elefant,
+			R.drawable.flugzeug, R.drawable.klammer, R.drawable.lampe,
+			R.drawable.rakete, R.drawable.schmetterling, R.drawable.telefon,
+			R.drawable.vogel };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		restart = (Button) findViewById(R.id.button1);
+		end = (Button) findViewById(R.id.button2);
 		isClicked = 0;
 		buttons = new ArrayList<MemoryButton>();
 		shuffleArray(bildIDs);
@@ -191,6 +193,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.button1:
+			restartGame();
 			break;
 		case R.id.button2:
 
@@ -200,7 +203,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	private void turnOverCard(MemoryButton button) {
-		if (button.isSelected && (!button.isLocked)) {
+		if (button.isSelected && (!button.isTurned()) && (!button.isLocked)) {
 			isClicked++;
 			if (isClicked == 3) {
 				for (int i = 0; i < buttons.size(); i++) {
@@ -260,6 +263,30 @@ public class MainActivity extends Activity implements OnClickListener {
 			ar[index] = ar[i];
 			ar[i] = a;
 		}
+	}
+	
+	private void restartGame() {
+		shuffleArray(bildIDs);
+		for (int i = 0; i < 12; i++) {
+			resetMemoryButtonBools(buttons.get(i));
+			buttons.get(i).setbildID(bildIDs[i]);
+			buttons.get(i).getButton().setImageResource(R.drawable.ic_launcher);
+			
+		}
+		shuffleArray(bildIDs);
+		for (int i = 12; i < 24; i++) {
+			resetMemoryButtonBools(buttons.get(i));
+			buttons.get(i).setbildID(bildIDs[i - 12]);
+			buttons.get(i).getButton().setImageResource(R.drawable.ic_launcher);
+		}
+		
+	}
+	
+	
+	private void resetMemoryButtonBools(MemoryButton buttonP) {
+		buttonP.setIsLocked(false);
+		buttonP.setIsTurned(false);
+		buttonP.setIsSelected(false);
 	}
 
 }
