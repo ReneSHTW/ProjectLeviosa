@@ -9,8 +9,9 @@ public class MemoryButton {
 	boolean isSelected;
 	boolean isTurned;
 	boolean isLocked;
+	int bildID;
 
-	MemoryButton(ImageButton buttonP, int idP) {
+	MemoryButton(ImageButton buttonP, int idP, int bildIDP) {
 		if (idP >= 0) {
 			id = idP;
 		} else {
@@ -21,6 +22,7 @@ public class MemoryButton {
 		} else {
 			throw new IllegalArgumentException();
 		}
+		bildID = bildIDP;
 		isSelected = false;
 		isTurned = false;
 		isLocked = false;
@@ -56,6 +58,10 @@ public class MemoryButton {
 
 	public int getId() {
 		return id;
+	}
+
+	public int getbildID() {
+		return bildID;
 	}
 
 }

@@ -2,7 +2,9 @@ package com.example.projectleviosa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import android.R.integer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,68 +17,71 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-	private ImageButton a1, a2, a3, a4, b1, b2, b3, b4, c1, c2, c3, c4, d1, d2,
-			d3, d4, e1, e2, e3, e4, f1, f2, f3, f4;
 	private Button restart, end;
 	private int isClicked;
 	private List<MemoryButton> buttons;
-	private int indexButton;
+	private int[] bildIDs = { R.drawable.tadeus, R.drawable.tadeus,
+			R.drawable.tadeus, R.drawable.tadeus, R.drawable.tadeus,
+			R.drawable.tadeus, R.drawable.levizoa, R.drawable.levizoa,
+			R.drawable.levizoa, R.drawable.levizoa, R.drawable.levizoa,
+			R.drawable.levizoa };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		isClicked = 0;
-		indexButton = -1;
 		buttons = new ArrayList<MemoryButton>();
+		shuffleArray(bildIDs);
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton1), 0));
+				(ImageButton) findViewById(R.id.imageButton1), 0, bildIDs[0]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton2), 1));
+				(ImageButton) findViewById(R.id.imageButton2), 1, bildIDs[1]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton3), 2));
+				(ImageButton) findViewById(R.id.imageButton3), 2, bildIDs[2]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton4), 3));
+				(ImageButton) findViewById(R.id.imageButton4), 3, bildIDs[3]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton5), 4));
+				(ImageButton) findViewById(R.id.imageButton5), 4, bildIDs[4]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton6), 5));
+				(ImageButton) findViewById(R.id.imageButton6), 5, bildIDs[5]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton7), 6));
+				(ImageButton) findViewById(R.id.imageButton7), 6, bildIDs[6]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton8), 7));
+				(ImageButton) findViewById(R.id.imageButton8), 7, bildIDs[7]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton9), 8));
+				(ImageButton) findViewById(R.id.imageButton9), 8, bildIDs[8]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton10), 9));
+				(ImageButton) findViewById(R.id.imageButton10), 9, bildIDs[9]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton11), 10));
+				(ImageButton) findViewById(R.id.imageButton11), 10, bildIDs[10]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton12), 11));
+				(ImageButton) findViewById(R.id.imageButton12), 11, bildIDs[11]));
+		shuffleArray(bildIDs);
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton13), 12));
+				(ImageButton) findViewById(R.id.imageButton13), 12, bildIDs[0]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton14), 13));
+				(ImageButton) findViewById(R.id.imageButton14), 13, bildIDs[1]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton15), 14));
+				(ImageButton) findViewById(R.id.imageButton15), 14, bildIDs[2]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton16), 15));
+				(ImageButton) findViewById(R.id.imageButton16), 15, bildIDs[3]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton17), 16));
+				(ImageButton) findViewById(R.id.imageButton17), 16, bildIDs[4]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton18), 17));
+				(ImageButton) findViewById(R.id.imageButton18), 17, bildIDs[5]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton19), 18));
+				(ImageButton) findViewById(R.id.imageButton19), 18, bildIDs[6]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton20), 19));
+				(ImageButton) findViewById(R.id.imageButton20), 19, bildIDs[7]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton21), 20));
+				(ImageButton) findViewById(R.id.imageButton21), 20, bildIDs[8]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton22), 21));
+				(ImageButton) findViewById(R.id.imageButton22), 21, bildIDs[9]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton23), 22));
+				(ImageButton) findViewById(R.id.imageButton23), 22, bildIDs[10]));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton24), 23));
+				(ImageButton) findViewById(R.id.imageButton24), 23, bildIDs[11]));
 
 		restart = (Button) findViewById(R.id.button1);
 		end = (Button) findViewById(R.id.button2);
@@ -196,16 +201,18 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	private void turnOverCard(MemoryButton button) {
 		if (button.isSelected && (!button.isLocked)) {
-			isClicked += 1;
+			isClicked++;
 			if (isClicked == 3) {
 				for (int i = 0; i < buttons.size(); i++) {
-					buttons.get(i).getButton()
-							.setImageResource(R.drawable.ic_launcher);
-					buttons.get(i).setIsTurned(false);
+					if (!buttons.get(i).isLocked) {
+						buttons.get(i).getButton()
+								.setImageResource(R.drawable.ic_launcher);
+						buttons.get(i).setIsTurned(false);
+					}
 				}
 				isClicked = 1;
 			}
-			button.getButton().setImageResource(R.drawable.levizoa);
+			button.getButton().setImageResource(button.getbildID());
 			button.setIsSelected(false);
 			button.setIsTurned(true);
 			// Sprachausgabe: "Ein xyz!"
@@ -219,7 +226,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			deleteSelections();
 			button.setIsSelected(true);
 			// Sprachausgabe: "A1"
-		} else if (button.isLocked = true) {
+		} else if (button.isLocked) {
 			// Tue nichts, optional Sprachausgabe:
 			// "Diese Karte hat Ihren Partner bereits gefunden! ect."
 		}
@@ -233,7 +240,26 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	private void checkIfPair(MemoryButton button) {
-		//Implementierung folgt, vorher muessen verschiedene Bilder mit jeweiligen IDs gespeichert werden
+		for (int i = 0; i < buttons.size(); i++) {
+			if (buttons.get(i).isTurned
+					&& (buttons.get(i).getbildID() == button.getbildID())
+					&& (buttons.get(i).getId() != button.getId())) {
+				button.setIsLocked(true);
+				buttons.get(i).setIsLocked(true);
+			}
+		}
+
+	}
+
+	static void shuffleArray(int[] ar) {
+		Random rnd = new Random();
+		for (int i = ar.length - 1; i > 0; i--) {
+			int index = rnd.nextInt(i + 1);
+			// Simple swap
+			int a = ar[index];
+			ar[index] = ar[i];
+			ar[i] = a;
+		}
 	}
 
 }
