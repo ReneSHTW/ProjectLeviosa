@@ -2,20 +2,23 @@ package com.example.projectleviosa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
-import android.R.integer;
 import android.app.Activity;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity implements OnClickListener,
+		OnInitListener {
 
 	private Button restart, end;
 	private int isClicked;
@@ -25,6 +28,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			R.drawable.flugzeug, R.drawable.klammer, R.drawable.lampe,
 			R.drawable.rakete, R.drawable.schmetterling, R.drawable.telefon,
 			R.drawable.vogel };
+	TextToSpeech tts;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,57 +37,82 @@ public class MainActivity extends Activity implements OnClickListener {
 		restart = (Button) findViewById(R.id.button1);
 		end = (Button) findViewById(R.id.button2);
 		isClicked = 0;
+		tts = new TextToSpeech(this, this);
 		buttons = new ArrayList<MemoryButton>();
 		shuffleArray(bildIDs);
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton1), 0, bildIDs[0]));
+				(ImageButton) findViewById(R.id.imageButton1), 0, bildIDs[0],
+				"A 1"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton2), 1, bildIDs[1]));
+				(ImageButton) findViewById(R.id.imageButton2), 1, bildIDs[1],
+				"A 2"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton3), 2, bildIDs[2]));
+				(ImageButton) findViewById(R.id.imageButton3), 2, bildIDs[2],
+				"A 3"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton4), 3, bildIDs[3]));
+				(ImageButton) findViewById(R.id.imageButton4), 3, bildIDs[3],
+				"A 4"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton5), 4, bildIDs[4]));
+				(ImageButton) findViewById(R.id.imageButton5), 4, bildIDs[4],
+				"B 1"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton6), 5, bildIDs[5]));
+				(ImageButton) findViewById(R.id.imageButton6), 5, bildIDs[5],
+				"B 2"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton7), 6, bildIDs[6]));
+				(ImageButton) findViewById(R.id.imageButton7), 6, bildIDs[6],
+				"B 3"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton8), 7, bildIDs[7]));
+				(ImageButton) findViewById(R.id.imageButton8), 7, bildIDs[7],
+				"B 4"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton9), 8, bildIDs[8]));
+				(ImageButton) findViewById(R.id.imageButton9), 8, bildIDs[8],
+				"C 1"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton10), 9, bildIDs[9]));
+				(ImageButton) findViewById(R.id.imageButton10), 9, bildIDs[9],
+				"C 2"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton11), 10, bildIDs[10]));
+				(ImageButton) findViewById(R.id.imageButton11), 10,
+				bildIDs[10], "C 3"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton12), 11, bildIDs[11]));
+				(ImageButton) findViewById(R.id.imageButton12), 11,
+				bildIDs[11], "C 4"));
 		shuffleArray(bildIDs);
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton13), 12, bildIDs[0]));
+				(ImageButton) findViewById(R.id.imageButton13), 12, bildIDs[0],
+				"D 1"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton14), 13, bildIDs[1]));
+				(ImageButton) findViewById(R.id.imageButton14), 13, bildIDs[1],
+				"D 2"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton15), 14, bildIDs[2]));
+				(ImageButton) findViewById(R.id.imageButton15), 14, bildIDs[2],
+				"D 3"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton16), 15, bildIDs[3]));
+				(ImageButton) findViewById(R.id.imageButton16), 15, bildIDs[3],
+				"D 4"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton17), 16, bildIDs[4]));
+				(ImageButton) findViewById(R.id.imageButton17), 16, bildIDs[4],
+				"E 1"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton18), 17, bildIDs[5]));
+				(ImageButton) findViewById(R.id.imageButton18), 17, bildIDs[5],
+				"E 2"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton19), 18, bildIDs[6]));
+				(ImageButton) findViewById(R.id.imageButton19), 18, bildIDs[6],
+				"E 3"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton20), 19, bildIDs[7]));
+				(ImageButton) findViewById(R.id.imageButton20), 19, bildIDs[7],
+				"E 4"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton21), 20, bildIDs[8]));
+				(ImageButton) findViewById(R.id.imageButton21), 20, bildIDs[8],
+				"F 1"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton22), 21, bildIDs[9]));
+				(ImageButton) findViewById(R.id.imageButton22), 21, bildIDs[9],
+				"F 2"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton23), 22, bildIDs[10]));
+				(ImageButton) findViewById(R.id.imageButton23), 22,
+				bildIDs[10], "F 3"));
 		buttons.add(new MemoryButton(
-				(ImageButton) findViewById(R.id.imageButton24), 23, bildIDs[11]));
+				(ImageButton) findViewById(R.id.imageButton24), 23,
+				bildIDs[11], "F 4"));
 
 		restart = (Button) findViewById(R.id.button1);
 		end = (Button) findViewById(R.id.button2);
@@ -193,9 +222,11 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.button1:
+			convertTextToSpeech("Spiel neustarten!");
 			restartGame();
 			break;
 		case R.id.button2:
+			convertTextToSpeech("Leeeviiiooosaaaaa");
 
 			break;
 		}
@@ -218,18 +249,25 @@ public class MainActivity extends Activity implements OnClickListener {
 			button.getButton().setImageResource(button.getbildID());
 			button.setIsSelected(false);
 			button.setIsTurned(true);
-			// Sprachausgabe: "Ein xyz!"
+			readImage(button.getbildID());
 
 			if (isClicked == 2) { // Jetzt muss hier geprueft werden, ob die
 									// Partnerkarte gefunden worden ist
 				checkIfPair(button);
 
 			}
-		} else if ((!button.isSelected) && (!button.isLocked)) {
+		} else if ((!button.isSelected) && (!button.isLocked) && (!button.isTurned)) {
 			deleteSelections();
 			button.setIsSelected(true);
-			// Sprachausgabe: "A1"
-		} else if (button.isLocked) {
+			convertTextToSpeech(button.getPosition());
+
+		} 
+		else if ((!button.isSelected) && (!button.isLocked) && (button.isTurned)) {
+			readImage(button.getbildID());
+			
+		}
+		else if (button.isLocked) {
+			readImage(button.getbildID());
 			// Tue nichts, optional Sprachausgabe:
 			// "Diese Karte hat Ihren Partner bereits gefunden! ect."
 		}
@@ -264,14 +302,14 @@ public class MainActivity extends Activity implements OnClickListener {
 			ar[i] = a;
 		}
 	}
-	
+
 	private void restartGame() {
 		shuffleArray(bildIDs);
 		for (int i = 0; i < 12; i++) {
 			resetMemoryButtonBools(buttons.get(i));
 			buttons.get(i).setbildID(bildIDs[i]);
 			buttons.get(i).getButton().setImageResource(R.drawable.ic_launcher);
-			
+
 		}
 		shuffleArray(bildIDs);
 		for (int i = 12; i < 24; i++) {
@@ -279,14 +317,87 @@ public class MainActivity extends Activity implements OnClickListener {
 			buttons.get(i).setbildID(bildIDs[i - 12]);
 			buttons.get(i).getButton().setImageResource(R.drawable.ic_launcher);
 		}
-		
+
 	}
-	
-	
+
 	private void resetMemoryButtonBools(MemoryButton buttonP) {
 		buttonP.setIsLocked(false);
 		buttonP.setIsTurned(false);
 		buttonP.setIsSelected(false);
+	}
+
+	@Override
+	public void onInit(int status) {
+		// TODO Auto-generated method stub
+		if (status == TextToSpeech.SUCCESS) {
+			int result = tts.setLanguage(Locale.GERMAN);
+			if (result == TextToSpeech.LANG_MISSING_DATA
+					|| result == TextToSpeech.LANG_NOT_SUPPORTED) {
+				Log.e("error", "This Language is not supported");
+			} else {
+				// ConvertTextToSpeech("Leviosa");
+			}
+		} else
+			Log.e("error", "Initilization Failed!");
+	}
+
+	private void convertTextToSpeech(String s) {
+		// TODO Auto-generated method stub
+		// text = et.getText().toString();
+		if (s == null || "".equals(s)) {
+			s = "Content not available";
+			tts.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+		} else
+			tts.speak(s, TextToSpeech.QUEUE_FLUSH, null);
+	}
+
+	private void readImage(int imgId) {
+
+		switch (imgId) {
+		case R.drawable.auto:
+			tts.speak("Auto", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+		case R.drawable.bahn:
+			tts.speak("Bahn", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+		case R.drawable.ball:
+			tts.speak("Ball", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+
+		case R.drawable.blume:
+			tts.speak("Blume", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+		case R.drawable.elefant:
+			tts.speak("Elefant", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+
+		case R.drawable.flugzeug:
+			tts.speak("Flugzeug", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+		case R.drawable.klammer:
+			tts.speak("Klammer", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+		case R.drawable.lampe:
+			tts.speak("Lampe", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+		case R.drawable.rakete:
+			tts.speak("Rakete", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+		case R.drawable.schmetterling:
+			tts.speak("Schmetterling", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+		case R.drawable.telefon:
+			tts.speak("Telefon", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+
+		case R.drawable.vogel:
+			tts.speak("Vogel", TextToSpeech.QUEUE_FLUSH, null);
+			break;
+		default:
+			// Brandy
+			break;
+
+		}
 	}
 
 }

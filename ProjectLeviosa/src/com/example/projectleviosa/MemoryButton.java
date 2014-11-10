@@ -10,8 +10,9 @@ public class MemoryButton {
 	boolean isTurned;
 	boolean isLocked;
 	int bildID;
+	String position;
 
-	MemoryButton(ImageButton buttonP, int idP, int bildIDP) {
+	MemoryButton(ImageButton buttonP, int idP, int bildIDP, String positionP) {
 		if (idP >= 0) {
 			id = idP;
 		} else {
@@ -26,6 +27,7 @@ public class MemoryButton {
 		isSelected = false;
 		isTurned = false;
 		isLocked = false;
+		position = positionP;
 	}
 
 	public void setIsSelected(boolean value) {
@@ -65,6 +67,10 @@ public class MemoryButton {
 	}
 	public void setbildID(int id) {
 		bildID = id;
+	}
+	
+	public String getPosition() {
+		return position;
 	}
 
 }
