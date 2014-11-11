@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -20,24 +21,48 @@ import android.widget.ImageButton;
 public class MainActivity extends Activity implements OnClickListener,
 		OnInitListener {
 
+	private Intent intent;
 	private Button restart, end;
 	private int isClicked;
+	private int isNeustartClicked;
 	private List<MemoryButton> buttons;
 	private int[] bildIDs = { R.drawable.auto, R.drawable.bahn,
 			R.drawable.ball, R.drawable.blume, R.drawable.elefant,
 			R.drawable.flugzeug, R.drawable.klammer, R.drawable.lampe,
 			R.drawable.rakete, R.drawable.schmetterling, R.drawable.telefon,
 			R.drawable.vogel };
-	TextToSpeech tts;
+	private TextToSpeech tts;
+	private boolean blindenmodus;
+	private float sprachgeschwindigkeit;
+	private Bundle extras;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		extras = getIntent().getExtras();
+		blindenmodus = true;
+		sprachgeschwindigkeit = 1.0f;
+		if (extras != null) {
+			if (extras.getString("blindenmodus").equals("Blindenmodus an")) {
+				blindenmodus = false;
+			}
+			if (extras.getString("sprachgeschwindigkeit").equals(
+					"Sprachgeschwindigkeit: doppelt")) {
+				sprachgeschwindigkeit = 2.0f;
+			}
+			if (extras.getString("sprachgeschwindigkeit").equals(
+					"Sprachgeschwindigkeit: dreifach")) {
+				sprachgeschwindigkeit = 3.0f;
+			}
+		}
 		restart = (Button) findViewById(R.id.button1);
 		end = (Button) findViewById(R.id.button2);
 		isClicked = 0;
+		isNeustartClicked = 0;
 		tts = new TextToSpeech(this, this);
+
+		tts.setSpeechRate(sprachgeschwindigkeit);
 		buttons = new ArrayList<MemoryButton>();
 		shuffleArray(bildIDs);
 		buttons.add(new MemoryButton(
@@ -222,19 +247,83 @@ public class MainActivity extends Activity implements OnClickListener,
 			break;
 
 		case R.id.button1:
-			convertTextToSpeech("Spiel neustarten!");
-			restartGame();
+			isNeustartClicked++;
+			if (isNeustartClicked == 1) {
+				convertTextToSpeech("Spiel neustarten?");
+			}
+			if (isNeustartClicked == 2) {
+				restartGame();
+				convertTextToSpeech("Spiel neu gestartet!");
+				isNeustartClicked = 0;
+			}
 			break;
 		case R.id.button2:
-			convertTextToSpeech("Leeeviiiooosaaaaa");
-
+			isNeustartClicked = 0;
+			convertTextToSpeech("Globox");
+			intent = new Intent(getApplicationContext(), OptionMenu.class);
+			if (extras != null) {
+				intent.putExtra("blindenmodus",
+						extras.getString("blindenmodus"));
+				intent.putExtra("sprachgeschwindigkeit",
+						extras.getString("sprachgeschwindigkeit"));
+				startActivity(intent);
+			} else {
+				startActivity(intent);
+			}
 			break;
 		}
 
 	}
 
 	private void turnOverCard(MemoryButton button) {
-		if (button.isSelected && (!button.isTurned()) && (!button.isLocked)) {
+		if (blindenmodus) {
+			isNeustartClicked = 0;
+			if (button.isSelected && (!button.isTurned()) && (!button.isLocked)) {
+				isClicked++;
+				if (isClicked == 3) {
+					for (int i = 0; i < buttons.size(); i++) {
+						if (!buttons.get(i).isLocked) {
+							buttons.get(i).getButton()
+									.setImageResource(R.drawable.ic_launcher);
+							buttons.get(i).setIsTurned(false);
+						}
+					}
+					isClicked = 1;
+				}
+				button.getButton().setImageResource(button.getbildID());
+				button.setIsSelected(false);
+				button.setIsTurned(true);
+				readImage(button.getbildID());
+
+				if (isClicked == 2) {
+					if (checkIfPair(button)) {
+						convertTextToSpeech("Paar gefunden.");
+					}
+
+				}
+			} else if ((!button.isSelected) && (!button.isLocked)
+					&& (!button.isTurned)) {
+				deleteSelections();
+				button.setIsSelected(true);
+				convertTextToSpeech(button.getPosition());
+
+			} else if ((!button.isSelected) && (!button.isLocked)
+					&& (button.isTurned)) {
+				readImage(button.getbildID());
+
+			} else if (button.isLocked) {
+				readImage(button.getbildID());
+			}
+		}
+		else {
+			turnOverCardNoBlind(button);
+		}
+
+	}
+	
+	private void turnOverCardNoBlind(MemoryButton button) {
+		isNeustartClicked = 0;
+		if ((!button.isTurned()) && (!button.isLocked)) {
 			isClicked++;
 			if (isClicked == 3) {
 				for (int i = 0; i < buttons.size(); i++) {
@@ -247,32 +336,11 @@ public class MainActivity extends Activity implements OnClickListener,
 				isClicked = 1;
 			}
 			button.getButton().setImageResource(button.getbildID());
-			button.setIsSelected(false);
 			button.setIsTurned(true);
-			readImage(button.getbildID());
 
-			if (isClicked == 2) { // Jetzt muss hier geprueft werden, ob die
-									// Partnerkarte gefunden worden ist
-				checkIfPair(button);
-
-			}
-		} else if ((!button.isSelected) && (!button.isLocked) && (!button.isTurned)) {
-			deleteSelections();
-			button.setIsSelected(true);
-			convertTextToSpeech(button.getPosition());
-
-		} 
-		else if ((!button.isSelected) && (!button.isLocked) && (button.isTurned)) {
-			readImage(button.getbildID());
-			
-		}
-		else if (button.isLocked) {
-			readImage(button.getbildID());
-			// Tue nichts, optional Sprachausgabe:
-			// "Diese Karte hat Ihren Partner bereits gefunden! ect."
-		}
-
+		}  
 	}
+	
 
 	private void deleteSelections() {
 		for (int i = 0; i < buttons.size(); i++) {
@@ -280,16 +348,17 @@ public class MainActivity extends Activity implements OnClickListener,
 		}
 	}
 
-	private void checkIfPair(MemoryButton button) {
+	private boolean checkIfPair(MemoryButton button) {
 		for (int i = 0; i < buttons.size(); i++) {
 			if (buttons.get(i).isTurned
 					&& (buttons.get(i).getbildID() == button.getbildID())
 					&& (buttons.get(i).getId() != button.getId())) {
 				button.setIsLocked(true);
 				buttons.get(i).setIsLocked(true);
+				return true;
 			}
 		}
-
+		return false;
 	}
 
 	static void shuffleArray(int[] ar) {
@@ -399,5 +468,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		}
 	}
+	
+	
 
 }
