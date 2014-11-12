@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		blindenmodus = true;
 		sprachgeschwindigkeit = 1.0f;
 		if (extras != null) {
-			if (extras.getString("blindenmodus").equals("Blindenmodus an")) {
+			if (extras.getString("blindenmodus").equals("Blindenmodus aus")) {
 				blindenmodus = false;
 			}
 			if (extras.getString("sprachgeschwindigkeit").equals(
@@ -249,7 +249,7 @@ public class MainActivity extends Activity implements OnClickListener,
 		case R.id.button1:
 			isNeustartClicked++;
 			if (isNeustartClicked == 1) {
-				convertTextToSpeech("Spiel neustarten?");
+				convertTextToSpeech("Möchten Sie das Spiel neustarten?");
 			}
 			if (isNeustartClicked == 2) {
 				restartGame();
@@ -259,7 +259,7 @@ public class MainActivity extends Activity implements OnClickListener,
 			break;
 		case R.id.button2:
 			isNeustartClicked = 0;
-			convertTextToSpeech("Globox");
+			convertTextToSpeech("Menü wird aufgerufen");
 			intent = new Intent(getApplicationContext(), OptionMenu.class);
 			if (extras != null) {
 				intent.putExtra("blindenmodus",
@@ -314,13 +314,12 @@ public class MainActivity extends Activity implements OnClickListener,
 			} else if (button.isLocked) {
 				readImage(button.getbildID());
 			}
-		}
-		else {
+		} else {
 			turnOverCardNoBlind(button);
 		}
 
 	}
-	
+
 	private void turnOverCardNoBlind(MemoryButton button) {
 		isNeustartClicked = 0;
 		if ((!button.isTurned()) && (!button.isLocked)) {
@@ -335,12 +334,16 @@ public class MainActivity extends Activity implements OnClickListener,
 				}
 				isClicked = 1;
 			}
+			if (isClicked == 2) {
+				 checkIfPair(button); 
+				
+
+			}
 			button.getButton().setImageResource(button.getbildID());
 			button.setIsTurned(true);
 
-		}  
+		}
 	}
-	
 
 	private void deleteSelections() {
 		for (int i = 0; i < buttons.size(); i++) {
@@ -468,7 +471,5 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		}
 	}
-	
-	
 
 }
