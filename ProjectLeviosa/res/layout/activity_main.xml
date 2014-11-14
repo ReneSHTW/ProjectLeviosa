@@ -194,7 +194,7 @@
             android:layout_alignBottom="@+id/button1"
             android:layout_alignParentRight="true"
             android:layout_marginRight="46dp"
-            android:text="Ende" />
+            android:text="Menü" />
     </RelativeLayout>
 
 </LinearLayout>
