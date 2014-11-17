@@ -90,7 +90,7 @@ public class OptionMenu extends Activity implements OnClickListener, OnInitListe
 			}
 			break;
 		case R.id.button3:
-			intent = new Intent(getApplicationContext(), MainActivity.class);
+			intent = new Intent(getApplicationContext(), NoTalkbackActivity.class);
 			intent.putExtra("blindenmodus", blindenmodusBtn.getText()
 					.toString());
 			intent.putExtra("sprachgeschwindigkeit", sprachgeschwindigkeitBtn
