@@ -16,24 +16,28 @@
                 android:id="@+id/imageButton1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA1"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA2"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA3"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA4"
                 android:src="@drawable/ic_launcher" />
         </TableRow>
 
@@ -43,24 +47,28 @@
                 android:id="@+id/imageButton5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA5"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA6"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA7"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA8"
                 android:src="@drawable/ic_launcher" />
         </TableRow>
 
@@ -70,24 +78,28 @@
                 android:id="@+id/imageButton9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA9"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA10"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA11"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA12"
                 android:src="@drawable/ic_launcher" />
         </TableRow>
 
@@ -97,24 +109,28 @@
                 android:id="@+id/imageButton13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA13"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA14"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA15"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA16"
                 android:src="@drawable/ic_launcher" />
         </TableRow>
 
@@ -124,24 +140,28 @@
                 android:id="@+id/imageButton17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA17"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA18"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA19"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA20"
                 android:src="@drawable/ic_launcher" />
         </TableRow>
 
@@ -151,24 +171,28 @@
                 android:id="@+id/imageButton21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA21"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA22"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA23"
                 android:src="@drawable/ic_launcher" />
 
             <ImageButton
                 android:id="@+id/imageButton24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/ButtonA24"
                 android:src="@drawable/ic_launcher" />
         </TableRow>
     </TableLayout>

@@ -23,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name="OptionMenu"></activity>
+        <activity android:name="NoTalkBack"></activity>
+        <activity android:name="WithTalkBack"></activity>
     </application>
 
 </manifest>
