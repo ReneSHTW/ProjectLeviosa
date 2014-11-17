@@ -18,7 +18,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-public class NoTalkbackActivity extends Activity implements OnClickListener,
+public class MainActivity extends Activity implements OnClickListener,
 		OnInitListener {
 
 	private Intent intent;
