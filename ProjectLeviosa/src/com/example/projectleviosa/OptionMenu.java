@@ -102,10 +102,6 @@ public class OptionMenu extends Activity implements OnClickListener, OnInitListe
 
 	}
 
-	@Override
-	public void onBackPressed() {
-		finish();
-	}
 
 	@Override
 	public void onInit(int status) {
