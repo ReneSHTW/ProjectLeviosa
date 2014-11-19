@@ -22,12 +22,12 @@ import android.widget.ImageButton;
 public class MainActivity extends Activity implements OnClickListener, OnInitListener {
 
 	private Intent intent;
-	private Button restart, end;
+	private Button restart, menuButton;
 	private int isClicked;
 	private int isNeustartClicked;
 	private List<MemoryButton> buttons;
-	private final int[] bildIDs = { R.drawable.auto, R.drawable.bahn, R.drawable.ball, R.drawable.blume, R.drawable.elefant, R.drawable.flugzeug, R.drawable.klammer,
-			R.drawable.lampe, R.drawable.rakete, R.drawable.schmetterling, R.drawable.telefon, R.drawable.vogel };
+	private final int[] bildIDs = { R.drawable.auto, R.drawable.bahn, R.drawable.ball, R.drawable.blume, R.drawable.elefant, R.drawable.flugzeug,
+			R.drawable.klammer, R.drawable.lampe, R.drawable.rakete, R.drawable.schmetterling, R.drawable.telefon, R.drawable.vogel };
 	private TextToSpeech tts;
 	private boolean blindenmodus;
 	private float sprachgeschwindigkeit;
@@ -58,7 +58,7 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 			}
 		}
 		restart = (Button) findViewById(R.id.button1);
-		end = (Button) findViewById(R.id.button2);
+		menuButton = (Button) findViewById(R.id.button2);
 		isClicked = 0;
 		isNeustartClicked = 0;
 		tts = new TextToSpeech(this, this);
@@ -93,13 +93,18 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 		buttons.add(new MemoryButton((ImageButton) findViewById(R.id.imageButton24), 23, bildIDs[11], "F 4"));
 
 		restart = (Button) findViewById(R.id.button1);
-		end = (Button) findViewById(R.id.button2);
+		menuButton = (Button) findViewById(R.id.button2);
 
 		for (int i = 0; i < buttons.size(); i++) {
 			buttons.get(i).getButton().setOnClickListener(this);
 		}
 		restart.setOnClickListener(this);
-		end.setOnClickListener(this);
+		menuButton.setOnClickListener(this);
+
+		if (isAccessibilityEnabled && isExploreByTouchEnabled) {
+			menuButton.setVisibility(View.INVISIBLE);
+		}
+
 	}
 
 	@Override
@@ -126,7 +131,6 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.imageButton1:
-
 			turnOverCard(buttons.get(0));
 			break;
 		case R.id.imageButton2:
@@ -200,14 +204,19 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 			break;
 
 		case R.id.button1:
-			isNeustartClicked++;
-			if (isNeustartClicked == 1) {
-				convertTextToSpeech("Möchten Sie das Spiel neustarten?");
-			}
-			if (isNeustartClicked == 2) {
+			if (!(isAccessibilityEnabled && isExploreByTouchEnabled)) {
+				isNeustartClicked++;
+				if (isNeustartClicked == 1) {
+					convertTextToSpeech("Möchten Sie das Spiel neustarten?");
+				}
+				if (isNeustartClicked == 2) {
+					restartGame();
+					convertTextToSpeech("Spiel neu gestartet!");
+					isNeustartClicked = 0;
+				}
+			} else {
 				restartGame();
 				convertTextToSpeech("Spiel neu gestartet!");
-				isNeustartClicked = 0;
 			}
 			break;
 		case R.id.button2:
@@ -223,45 +232,43 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 			}
 			break;
 		}
-
 	}
 
 	private void turnOverCard(MemoryButton button) {
-		if (blindenmodus) {
+		if (blindenmodus && !(isAccessibilityEnabled && isExploreByTouchEnabled)) {
 			isNeustartClicked = 0;
-			if (button.isSelected && (!button.isTurned()) && (!button.isLocked)) {
+			if (button.isSelected() && (!button.isTurned()) && (!button.isLocked())) {
 				isClicked++;
 				if (isClicked == 3) {
 					for (int i = 0; i < buttons.size(); i++) {
-						if (!buttons.get(i).isLocked) {
+						if (!buttons.get(i).isLocked()) {
 							buttons.get(i).getButton().setImageResource(R.drawable.ic_launcher);
 							buttons.get(i).setIsTurned(false);
 						}
 					}
 					isClicked = 1;
 				}
-				button.getButton().setImageResource(button.getbildID());
+				button.getButton().setImageResource(button.getBildID());
 				button.setIsSelected(false);
 				button.setIsTurned(true);
-				readImage(button.getbildID());
+				readImage(button.getBildID());
 
 				if (isClicked == 2) {
 					if (checkIfPair(button)) {
 						convertTextToSpeech("Paar gefunden.");
 					}
-
 				}
-			} else if ((!button.isSelected) && (!button.isLocked) && (!button.isTurned)) {
+			} else if ((!button.isSelected()) && (!button.isLocked()) && (!button.isTurned())) {
 				deleteSelections();
 				button.setIsSelected(true);
 				if (!(isAccessibilityEnabled && isExploreByTouchEnabled)) {
 					convertTextToSpeech(button.getPosition());
 				}
-			} else if ((!button.isSelected) && (!button.isLocked) && (button.isTurned)) {
-				readImage(button.getbildID());
+			} else if ((!button.isSelected()) && (!button.isLocked()) && (button.isTurned())) {
+				readImage(button.getBildID());
 
-			} else if (button.isLocked) {
-				readImage(button.getbildID());
+			} else if (button.isLocked()) {
+				readImage(button.getBildID());
 			}
 		} else {
 			turnOverCardNoBlind(button);
@@ -270,12 +277,15 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 	}
 
 	private void turnOverCardNoBlind(MemoryButton button) {
-		isNeustartClicked = 0;
-		if ((!button.isTurned()) && (!button.isLocked)) {
+		if (isAccessibilityEnabled && isExploreByTouchEnabled){
+			readImage(button.getBildID());
+		}
+			isNeustartClicked = 0;
+		if ((!button.isTurned()) && (!button.isLocked())) {
 			isClicked++;
 			if (isClicked == 3) {
 				for (int i = 0; i < buttons.size(); i++) {
-					if (!buttons.get(i).isLocked) {
+					if (!buttons.get(i).isLocked()) {
 						buttons.get(i).getButton().setImageResource(R.drawable.ic_launcher);
 						buttons.get(i).setIsTurned(false);
 					}
@@ -283,10 +293,11 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 				isClicked = 1;
 			}
 			if (isClicked == 2) {
-				checkIfPair(button);
-
+				if (checkIfPair(button) && (isAccessibilityEnabled && isExploreByTouchEnabled)) {
+					convertTextToSpeech("Paar gefunden.");
+				}
 			}
-			button.getButton().setImageResource(button.getbildID());
+			button.getButton().setImageResource(button.getBildID());
 			button.setIsTurned(true);
 
 		}
@@ -300,7 +311,7 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 
 	private boolean checkIfPair(MemoryButton button) {
 		for (int i = 0; i < buttons.size(); i++) {
-			if (buttons.get(i).isTurned && (buttons.get(i).getbildID() == button.getbildID()) && (buttons.get(i).getId() != button.getId())) {
+			if (buttons.get(i).isTurned() && (buttons.get(i).getBildID() == button.getBildID() && (buttons.get(i).getId() != button.getId()))) {
 				button.setIsLocked(true);
 				buttons.get(i).setIsLocked(true);
 				return true;
@@ -324,14 +335,14 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 		shuffleArray(bildIDs);
 		for (int i = 0; i < 12; i++) {
 			resetMemoryButtonBools(buttons.get(i));
-			buttons.get(i).setbildID(bildIDs[i]);
+			buttons.get(i).setBildID(bildIDs[i]);
 			buttons.get(i).getButton().setImageResource(R.drawable.ic_launcher);
 
 		}
 		shuffleArray(bildIDs);
 		for (int i = 12; i < 24; i++) {
 			resetMemoryButtonBools(buttons.get(i));
-			buttons.get(i).setbildID(bildIDs[i - 12]);
+			buttons.get(i).setBildID(bildIDs[i - 12]);
 			buttons.get(i).getButton().setImageResource(R.drawable.ic_launcher);
 		}
 
@@ -368,7 +379,6 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 	}
 
 	private void readImage(int imgId) {
-
 		switch (imgId) {
 		case R.drawable.auto:
 			tts.speak("Auto", TextToSpeech.QUEUE_FLUSH, null);
@@ -379,14 +389,12 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 		case R.drawable.ball:
 			tts.speak("Ball", TextToSpeech.QUEUE_FLUSH, null);
 			break;
-
 		case R.drawable.blume:
 			tts.speak("Blume", TextToSpeech.QUEUE_FLUSH, null);
 			break;
 		case R.drawable.elefant:
 			tts.speak("Elefant", TextToSpeech.QUEUE_FLUSH, null);
 			break;
-
 		case R.drawable.flugzeug:
 			tts.speak("Flugzeug", TextToSpeech.QUEUE_FLUSH, null);
 			break;
@@ -405,15 +413,12 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 		case R.drawable.telefon:
 			tts.speak("Telefon", TextToSpeech.QUEUE_FLUSH, null);
 			break;
-
 		case R.drawable.vogel:
 			tts.speak("Vogel", TextToSpeech.QUEUE_FLUSH, null);
 			break;
 		default:
 			// Brandy
 			break;
-
 		}
 	}
-
 }

@@ -15,26 +15,26 @@
     <string name="ButtonA2">A2</string>
     <string name="ButtonA3">A3</string>
     <string name="ButtonA4">A4</string>
-    <string name="ButtonA5">A5</string>
-    <string name="ButtonA6">A6</string>
-    <string name="ButtonA7">A7</string>
-    <string name="ButtonA8">A8</string>
-    <string name="ButtonA9">A9</string>
-    <string name="ButtonA10">A10</string>
-    <string name="ButtonA11">A11</string>
-    <string name="ButtonA12">A12</string>
-    <string name="ButtonA13">A13</string>
-    <string name="ButtonA14">A14</string>
-    <string name="ButtonA15">A15</string>
-    <string name="ButtonA16">A16</string>
-    <string name="ButtonA17">A17</string>
-    <string name="ButtonA18">A18</string>
-    <string name="ButtonA19">A19</string>
-    <string name="ButtonA20">A20</string>
-    <string name="ButtonA21">A21</string>
-    <string name="ButtonA22">A22</string>
-    <string name="ButtonA23">A23</string>
-    <string name="ButtonA24">A24</string>
+    <string name="ButtonA5">B1</string>
+    <string name="ButtonA6">B2</string>
+    <string name="ButtonA7">B3</string>
+    <string name="ButtonA8">B4</string>
+    <string name="ButtonA9">C1</string>
+    <string name="ButtonA10">C2</string>
+    <string name="ButtonA11">C3</string>
+    <string name="ButtonA12">C4</string>
+    <string name="ButtonA13">D1</string>
+    <string name="ButtonA14">D2</string>
+    <string name="ButtonA15">D3</string>
+    <string name="ButtonA16">D4</string>
+    <string name="ButtonA17">E1</string>
+    <string name="ButtonA18">E2</string>
+    <string name="ButtonA19">E3</string>
+    <string name="ButtonA20">E4</string>
+    <string name="ButtonA21">F1</string>
+    <string name="ButtonA22">F2</string>
+    <string name="ButtonA23">F3</string>
+    <string name="ButtonA24">F4</string>
 
 
 </resources>

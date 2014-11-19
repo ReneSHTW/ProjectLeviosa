@@ -4,13 +4,13 @@ import android.widget.ImageButton;
 
 public class MemoryButton {
 
-	ImageButton button;
-	int id;
-	boolean isSelected;
-	boolean isTurned;
-	boolean isLocked;
-	int bildID;
-	String position;
+	private ImageButton button;
+	private int id;
+	private boolean selectedStatus;
+	private boolean turnedStatus;
+	private boolean lockedStatus;
+	private int bildID;
+	private String position;
 
 	MemoryButton(ImageButton buttonP, int idP, int bildIDP, String positionP) {
 		if (idP >= 0) {
@@ -24,22 +24,22 @@ public class MemoryButton {
 			throw new IllegalArgumentException();
 		}
 		bildID = bildIDP;
-		isSelected = false;
-		isTurned = false;
-		isLocked = false;
+		selectedStatus = false;
+		turnedStatus = false;
+		lockedStatus = false;
 		position = positionP;
 	}
 
 	public void setIsSelected(boolean value) {
-		isSelected = value;
+		selectedStatus = value;
 	}
 
 	public void setIsTurned(boolean value) {
-		isTurned = value;
+		turnedStatus = value;
 	}
 
 	public void setIsLocked(boolean value) {
-		isLocked = value;
+		lockedStatus = value;
 	}
 
 	public ImageButton getButton() {
@@ -47,25 +47,25 @@ public class MemoryButton {
 	}
 
 	public boolean isSelected() {
-		return isSelected;
+		return selectedStatus;
 	}
 
 	public boolean isTurned() {
-		return isTurned;
+		return turnedStatus;
 	}
 
 	public boolean isLocked() {
-		return isLocked;
+		return lockedStatus;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public int getbildID() {
+	public int getBildID() {
 		return bildID;
 	}
-	public void setbildID(int id) {
+	public void setBildID(int id) {
 		bildID = id;
 	}
 	
