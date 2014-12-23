@@ -13,8 +13,10 @@ import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -105,6 +107,20 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 			menuButton.setVisibility(View.INVISIBLE);
 		}
 
+		WindowManager.LayoutParams lp1 = getWindow().getAttributes();
+		lp1.screenBrightness = 0.0f;
+		getWindow().setAttributes(lp1);
+
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent evt) {
+
+		WindowManager.LayoutParams lp1 = getWindow().getAttributes();
+		lp1.screenBrightness = 1.0f;
+		getWindow().setAttributes(lp1);
+
+		return true;
 	}
 
 	@Override
@@ -277,10 +293,10 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 	}
 
 	private void turnOverCardNoBlind(MemoryButton button) {
-		if (isAccessibilityEnabled && isExploreByTouchEnabled){
+		if (isAccessibilityEnabled && isExploreByTouchEnabled) {
 			readImage(button.getBildID());
 		}
-			isNeustartClicked = 0;
+		isNeustartClicked = 0;
 		if ((!button.isTurned()) && (!button.isLocked())) {
 			isClicked++;
 			if (isClicked == 3) {
@@ -314,10 +330,23 @@ public class MainActivity extends Activity implements OnClickListener, OnInitLis
 			if (buttons.get(i).isTurned() && (buttons.get(i).getBildID() == button.getBildID() && (buttons.get(i).getId() != button.getId()))) {
 				button.setIsLocked(true);
 				buttons.get(i).setIsLocked(true);
+				checkIfGameIsWon();
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private void checkIfGameIsWon() {
+		boolean gameIsWon = true;
+		for (int i = 0; i < buttons.size(); i++) {
+			if (!buttons.get(i).isLocked()) {
+				gameIsWon = false;
+			}
+		}
+		if (gameIsWon) {
+			convertTextToSpeech("Glückwunsch! Sie haben alle Paare gefunden.");
+		}
 	}
 
 	static void shuffleArray(int[] ar) {
